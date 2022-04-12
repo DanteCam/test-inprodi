@@ -11,7 +11,7 @@ let LoginApi;
 if (process.env.NODE_ENV === "development") {
   LoginApi = "http://localhost:4000/";
 } else if (process.env.NODE_ENV === "production") {
-  LoginApi = "http://localhost:8000/"; //Change for prod deploy
+  LoginApi = "https://improdi-examen.herokuapp.com/"; //Change for prod deploy
 }
 
 export const loginApi = axios.create({
