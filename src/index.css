@@ -1,0 +1,27 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap");
+body {
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  background: #f8f8f8;
+}
+button,
+svg {
+  cursor: pointer;
+}
+
+input {
+  border-color: #d9d9d9 !important;
+  box-shadow: none !important;
+}
+.ant-input-status-error {
+  color: red;
+  border-color: red !important;
+}
+.ant-input-status-success {
+  background: white !important;
+  background-color: white !important;
+}
+#root {
+  height: 100%;
+  width: 100%;
+}
