@@ -1,6 +1,5 @@
 import { Form } from "antd";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUserName } from "../Reducers/AuthSlice";
@@ -15,31 +14,23 @@ import {
   StyledPasswordInput,
   ErrorMessage,
 } from "./style";
+import useLoginCall from "../Shared/useLoginCall";
 
 export default function LoginForm() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [formEmail, setFormEmail] = useState("");
   const [formPassword, setFormPassword] = useState("");
-  const [error, setError] = useState("");
+  const { call, error } = useLoginCall(loginApi);
 
   const Login = () => {
     const formData = new FormData();
     formData.append("email", formEmail);
     formData.append("password", formPassword);
-    loginApi
-      .post("/api/login", formData)
-      .then((res) => {
-        dispatch(setUserName(res.data.user.name));
-        dispatch(setToken(res.data.token));
-      })
-      .then(() => {
-        navigate("/desktop");
-      })
-      .catch((err) => {
-        setError(err.response.data.err);
-        console.log(err.response.data.err);
-      });
+    const updateState = (res) => {
+      dispatch(setUserName(res.data.user.name));
+      dispatch(setToken(res.data.token));
+    };
+    call(formData, updateState, "/desktop");
   };
 
   return (
@@ -72,17 +63,13 @@ export default function LoginForm() {
           ]}
         >
           <StyledInput
-            className={
-              error === "There isn't a user with that email"
-                ? "ant-input-status-error "
-                : ""
-            }
+            className={error === "Not Found" ? "ant-input-status-error " : ""}
             value={formEmail}
             onChange={(e) => setFormEmail(e.target.value)}
             placeholder='Ingresa tu Correo Electrónico'
           />
         </Form.Item>
-        {error === "There isn't a user with that email" ? (
+        {error === "Not Found" ? (
           <ErrorMessage>
             El correo electrónico no está asociado a ninguna cuenta.
           </ErrorMessage>
@@ -113,16 +100,14 @@ export default function LoginForm() {
           ]}
         >
           <StyledPasswordInput
-            className={
-              error === "Incorrect password" ? "ant-input-status-error " : ""
-            }
+            className={error === "Bad Request" ? "ant-input-status-error " : ""}
             onChange={(e) => setFormPassword(e.target.value)}
             value={formPassword}
             placeholder='Ingresa tu Contraseña'
             visibilityToggle={false}
           />
         </Form.Item>
-        {error === "Incorrect password" ? (
+        {error === "Bad Request" ? (
           <ErrorMessage> La contraseña ingresada es incorrecta.</ErrorMessage>
         ) : (
           ""

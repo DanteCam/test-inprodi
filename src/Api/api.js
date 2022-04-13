@@ -15,11 +15,11 @@ if (process.env.NODE_ENV === "development") {
 }
 
 export const loginApi = axios.create({
-  baseURL: LoginApi,
+  baseURL: `${LoginApi}api/login`,
 });
 
 export const recoverApi = axios.create({
-  baseURL: LoginApi,
+  baseURL: `${LoginApi}api/recover_password`,
 });
 export const resetApi = (data) => {
   return axios.post(`${LoginApi}api/reset_password`, data, {

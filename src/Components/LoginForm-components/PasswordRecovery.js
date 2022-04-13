@@ -11,32 +11,22 @@ import { Form } from "antd";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { setRecoveryToken } from "../Reducers/AuthSlice";
 import { recoverApi } from "../../Api/api";
+import useLoginCall from "../Shared/useLoginCall";
 
 export default function PasswordRecovery() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [formEmail, setFormEmail] = useState("");
-  const [error, setError] = useState("");
+  const { call, error, setError } = useLoginCall(recoverApi);
 
   const Recover = () => {
     const formData = new FormData();
     formData.append("email", formEmail);
-
-    recoverApi
-      .post("/api/recover_password", formData)
-      .then((res) => {
-        dispatch(setRecoveryToken(res.data.token));
-      })
-      .then(() => {
-        navigate("/password-new");
-      })
-      .catch((err) => {
-        setError(err.response.statusText);
-        console.log(err.response.data.err);
-      });
+    const updateState = (res) => {
+      dispatch(setRecoveryToken(res.data.token));
+    };
+    call(formData, updateState, "/password-new");
   };
   return (
     <>
