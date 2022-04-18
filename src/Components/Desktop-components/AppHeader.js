@@ -34,11 +34,12 @@ export default function AppHeader() {
         <Row style={{ height: "inherit" }} align='middle'>
           <Col
             style={{ display: "flex" }}
-            sm={24}
-            md={18}
-            lg={20}
-            xl={20}
-            xxl={20}
+            xs={{ span: 24, offset: 4 }}
+            sm={{ span: 24, offset: 4 }}
+            md={{ span: 18, offset: 0 }}
+            lg={{ span: 20, offset: 0 }}
+            xl={{ span: 20, offset: 0 }}
+            xxl={{ span: 20, offset: 0 }}
           >
             {Icons.map((icon) => {
               return React.createElement(icon, {
@@ -60,7 +61,14 @@ export default function AppHeader() {
             />
           </Col>
 
-          <Col sm={24} md={6} lg={4} xl={4} xxl={4}>
+          <Col
+            xs={{ span: 24, pull: 5 }}
+            sm={{ span: 24, pull: 7 }}
+            md={{ span: 6, pull: 0 }}
+            lg={{ span: 4, pull: 0 }}
+            xl={{ span: 4, pull: 0 }}
+            xxl={{ span: 4, pull: 0 }}
+          >
             <Row justify='end' align='middle'>
               <NameStyled>{name}</NameStyled>
               <FiPower
